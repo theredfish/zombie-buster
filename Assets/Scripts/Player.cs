@@ -28,16 +28,28 @@ public class Player : MonoBehaviour {
 	// box collider
 	Vector2 nativeBoxColliderOffset;
 
+	[Header("The number of life for the player")]
+	private int life;
+
+	[Header("The max life for the player")]
+	public int maxLife = 4;
+
+	private SpriteRenderer spriteRenderer;
+
 	void Awake() {
 		playerAnimator = gameObject.GetComponent<Animator>();
 		gameObject.GetComponent<Rigidbody2D>().gravityScale = this.gravityScale;
 		nativeBoxColliderOffset = GetComponent<BoxCollider2D>().offset;
 		ghostBullet.gameObject.SetActive(false);
+		life = maxLife;
+		spriteRenderer = GetComponent<SpriteRenderer>();
+		spriteRenderer.color = Color.green;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		Move();
+		CheckDeath();
 	}
 
 	void FixedUpdate() {
@@ -100,5 +112,51 @@ public class Player : MonoBehaviour {
 		Vector2 localScale = gameObject.transform.localScale;
 		localScale.x *= -1;
 		transform.localScale = localScale;
+	}
+
+	public void TakeDamage(int damageNumber) {
+		life -= damageNumber;
+		Debug.Log("Player took damage, new life :" + life);
+
+		UpdateLifeSignal(life);
+	}
+
+	public void TakeSoul() {
+		life += 1;
+
+		UpdateLifeSignal(life);
+	}
+
+	private void UpdateLifeSignal(int life) {
+		switch (life)
+		{
+			case 0:
+				spriteRenderer.color = Color.red;
+				break;
+			case 1:
+				spriteRenderer.color = Color.red;
+				break;
+			case 2:
+				spriteRenderer.color = Color.yellow;
+				break;
+			case 3:
+				spriteRenderer.color = Color.blue;
+				break;
+			case 4:
+				spriteRenderer.color = Color.green;
+				break;
+		}
+	}
+
+	private void CheckDeath() {
+		if (life <= 0) {
+			Die();
+		}
+	}
+
+	private void Die() {
+		// anim
+		// restart the level / game
+		Debug.Log("Player dead");
 	}
 }
