@@ -19,8 +19,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4118041341070592}
-  - component: {fileID: 58107690358725524}
   - component: {fileID: 114990863156669100}
+  - component: {fileID: 70088322603708488}
   m_Layer: 0
   m_Name: GhostBullet
   m_TagString: Untagged
@@ -70,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1122559891422170}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6, y: -0.3, z: 0}
+  m_LocalPosition: {x: 0.4, y: -0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4476082823118114}
@@ -124,21 +124,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!58 &58107690358725524
-CircleCollider2D:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1122559891422170}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.06
 --- !u!61 &61785439069509132
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -164,6 +149,21 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.2, y: 0.35}
   m_EdgeRadius: 0
+--- !u!70 &70088322603708488
+CapsuleCollider2D:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1122559891422170}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 0.5, y: 0.07}
+  m_Direction: 1
 --- !u!95 &95148200481213088
 Animator:
   serializedVersion: 3
@@ -203,6 +203,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   ghostBullet: {fileID: 114990863156669100}
+  maxLife: 4
+  soulScoreText: {fileID: 0}
 --- !u!114 &114990863156669100
 MonoBehaviour:
   m_ObjectHideFlags: 1

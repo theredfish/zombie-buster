@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour {
 
@@ -34,6 +35,9 @@ public class Player : MonoBehaviour {
 	[Header("The max life for the player")]
 	public int maxLife = 4;
 
+	private int soulScore = 0;
+	public Text soulScoreText;
+
 	private SpriteRenderer spriteRenderer;
 
 	void Awake() {
@@ -44,6 +48,7 @@ public class Player : MonoBehaviour {
 		life = maxLife;
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.color = Color.green;
+		soulScoreText.text = "Souls : " + soulScore;
 	}
 
 	// Update is called once per frame
@@ -123,6 +128,9 @@ public class Player : MonoBehaviour {
 
 	public void TakeSoul() {
 		life += 1;
+		soulScore += 1;
+		soulScoreText.text = "Souls : " + soulScore;
+
 
 		UpdateLifeSignal(life);
 	}
