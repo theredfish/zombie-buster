@@ -17,10 +17,13 @@ public class Player : MonoBehaviour {
 	private float groundRadius = 0.2f;
 
 	[Header("The gameobject to check if the player is grounded")]
-	public Transform groudCheck;
+	public Transform groundCheck;
 
 	[Header("The gameobject on what the player is grounded")]
 	public LayerMask whatIsGround;
+
+	// ghost bullet
+	public GhostBullet ghostBullet;
 
 	// box collider
 	Vector2 nativeBoxColliderOffset;
@@ -29,6 +32,7 @@ public class Player : MonoBehaviour {
 		playerAnimator = gameObject.GetComponent<Animator>();
 		gameObject.GetComponent<Rigidbody2D>().gravityScale = this.gravityScale;
 		nativeBoxColliderOffset = GetComponent<BoxCollider2D>().offset;
+		ghostBullet.gameObject.SetActive(false);
 	}
 
 	// Update is called once per frame
@@ -37,25 +41,18 @@ public class Player : MonoBehaviour {
 	}
 
 	void FixedUpdate() {
-		grounded = Physics2D.OverlapCircle(this.groudCheck.position, this.groundRadius, this.whatIsGround);
-
-		// reset the collider offset
-		// if (grounded) {
-		// 	GetComponent<BoxCollider2D>().offset = nativeBoxColliderOffset;
-		// }
-
-		Debug.Log(grounded);
+		grounded = Physics2D.OverlapCircle(this.groundCheck.position, this.groundRadius, this.whatIsGround);
 	}
 
 	void Move() {
 		// controls
 		moveX = Input.GetAxis("Horizontal");
+		playerAnimator.SetBool ("isGrounded", grounded);
 
 		if (Input.GetButtonDown("Jump") && grounded) {
 			// the jump function change the collider position
 			// to fix the bad sprite position with the animation
 			Jump();
-			playerAnimator.SetTrigger("jump");
 		}
 
 		// reset the collider offset when the player is grounded
@@ -70,9 +67,10 @@ public class Player : MonoBehaviour {
 			playerAnimator.SetTrigger("walk");
 		}
 
-		if (Input.GetButton("Fire1")) {
-			playerAnimator.SetTrigger("attack");
+		if (Input.GetButtonDown("Fire1")) {
+			Fire();
 		}
+
 		// player directions
 		if (moveX < 0.0f && !facingRight) {
 			Flip();
@@ -80,7 +78,6 @@ public class Player : MonoBehaviour {
 			Flip();
 		}
 
-		playerAnimator.SetBool ("isGrounded", grounded);
 
 		// physics
 		gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2 (moveX * playerSpeed, gameObject.GetComponent<Rigidbody2D>().velocity.y);
@@ -88,7 +85,14 @@ public class Player : MonoBehaviour {
 
 	void Jump() {
 		Vector2 jump = new Vector2(0, jumpForce);
+		playerAnimator.SetTrigger("jump");
 		GetComponent<Rigidbody2D>().AddForce(jump);
+	}
+
+	void Fire() {
+		playerAnimator.SetTrigger("attack");
+		ghostBullet.gameObject.SetActive(true);
+		StartCoroutine(ghostBullet.Hit());
 	}
 
 	void Flip() {
