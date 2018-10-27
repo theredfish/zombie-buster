@@ -15,6 +15,10 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void Kill() {
-		Debug.Log("Kill");
+		Destroy(this);
+	}
+
+	void naiveMove() {
+		
 	}
 }
