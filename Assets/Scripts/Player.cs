@@ -166,5 +166,8 @@ public class Player : MonoBehaviour {
 		// anim
 		// restart the level / game
 		Debug.Log("Player dead");
+		GameObject.Find("GameManager").GetComponent<GameManager>().RespawnPlayer();
+		spriteRenderer.color = Color.green;
+		life = maxLife;
 	}
 }
